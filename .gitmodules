@@ -1,9 +1,3 @@
-[submodule "includde"]
-	path = includde
-	url = https://github.com/PossiblyRemember/Common-Utils.git
-[submodule "include"]
-	path = include
-	url = https://github.com/PossiblyRemember/Common-Utils.git
 [submodule "Possibly Remember"]
 	path = Possibly Remember
 	url = https://github.com/PossiblyRemember/Common-Utils.git
