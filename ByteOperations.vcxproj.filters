@@ -22,4 +22,9 @@
   <ItemGroup>
     <Text Include="testOut.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Users\dirt\OneDrive\Documents\C++\Possibly Remember\Memory Management\common_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>
