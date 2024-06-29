@@ -13,8 +13,7 @@
 //#include <GL/freeglut.h>
 
 //#include "image_utils.h"
-#include "Possibly Remember\Memory Management\common_utils.h"
-
+#include "Possibly Remember/Memory Management/common_utils.h"	
 #define DEBUG
 #define endl "\n"
 
@@ -29,7 +28,7 @@ struct BytedStuff {
 
 int main() {
 	BytedStuff newStructInit{};
-	MemorySearch search 
+	MemorySearch search;
 	cout << "\n" << &newStructInit;
 
 }
