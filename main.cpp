@@ -8,9 +8,9 @@
 #include <thread>
 #include <fstream>
 #include <vector>
-#include <GLFW/glfw3.h>
+//#include <GLFW/glfw3.h>
 #include <bitset>
-#include <GL/freeglut.h>
+//#include <GL/freeglut.h>
 
 //#include "image_utils.h"
 #include "./include/memoryMan.h"
