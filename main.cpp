@@ -8,9 +8,9 @@
 #include <thread>
 #include <fstream>
 #include <vector>
-//#include <GLFW/glfw3.h>
+#include <GLFW/glfw3.h>
 #include <bitset>
-//#include <GL/freeglut.h>
+#include <GL/freeglut.h>
 
 //#include "image_utils.h"
 #include "./include/memoryMan.h"
@@ -28,6 +28,6 @@ struct BytedStuff {
 
 int main() {
 	BytedStuff newStructInit;
-	cout << searchApplicationMemory<const char*>(sizeof(BytedStuff), 1, "very ", 5000, 2, 18420);
+	std::cout << searchApplicationMemory<const char*>(1, "",5000,2,13520);
 
 }
