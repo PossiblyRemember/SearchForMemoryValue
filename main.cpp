@@ -13,7 +13,7 @@
 //#include <GL/freeglut.h>
 
 //#include "image_utils.h"
-#include "Possibly Remember/Memory Management/common_utils.h"	
+#include "./include/memoryMan.h"
 #define DEBUG
 #define endl "\n"
 
@@ -27,8 +27,8 @@ struct BytedStuff {
 #pragma pack(pop)
 
 int main() {
-	BytedStuff newStructInit{};
-	MemorySearch search;
+	BytedStuff newStructInit;
+	MemorySearch<const char*>(sizeof(newStructInit), 8).search("very specific string", 5000);
 	cout << "\n" << &newStructInit;
 
 }

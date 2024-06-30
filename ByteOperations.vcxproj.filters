@@ -26,5 +26,11 @@
     <ClInclude Include="C:\Users\dirt\OneDrive\Documents\C++\Possibly Remember\Memory Management\common_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Possibly Remember\Memory Management\common_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\memoryMan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

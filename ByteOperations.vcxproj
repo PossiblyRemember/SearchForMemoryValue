@@ -139,6 +139,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\Users\dirt\OneDrive\Documents\C++\Possibly Remember\Memory Management\common_utils.h" />
+    <ClInclude Include="include\memoryMan.h" />
+    <ClInclude Include="Possibly Remember\Memory Management\common_utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
