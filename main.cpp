@@ -28,7 +28,6 @@ struct BytedStuff {
 
 int main() {
 	BytedStuff newStructInit;
-	searchMemory<const char*>(sizeof(BytedStuff), 1, "very specific string", 5000, 2);
-	cout << "\n" << &newStructInit;
+	cout << searchMemory<const char*>(sizeof(BytedStuff), 1, "very specific string", 5000, 2);
 
 }
