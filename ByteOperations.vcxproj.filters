@@ -35,6 +35,9 @@
     <ClInclude Include="include\moreAdvancedMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\longStringing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data.asm">
