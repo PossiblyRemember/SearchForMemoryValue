@@ -32,6 +32,9 @@
     <ClInclude Include="include\memoryMan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\moreAdvancedMemoryManagement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="data.asm">

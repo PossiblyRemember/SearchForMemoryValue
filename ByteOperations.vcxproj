@@ -115,7 +115,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>H:\Dev\Includes\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;freeglut_static.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="C:\Users\dirt\OneDrive\Documents\C++\Possibly Remember\Memory Management\common_utils.h" />
     <ClInclude Include="include\memoryMan.h" />
+    <ClInclude Include="include\moreAdvancedMemoryManagement.h" />
     <ClInclude Include="Possibly Remember\Memory Management\common_utils.h" />
   </ItemGroup>
   <ItemGroup>

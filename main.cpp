@@ -11,23 +11,38 @@
 //#include <GLFW/glfw3.h>
 #include <bitset>
 //#include <GL/freeglut.h>
+#pragma comment(lib, "")
 
 //#include "image_utils.h"
 #include "./include/memoryMan.h"
-#define DEBUG
+//#define DEBUG
 #define endl "\n"
 
 using namespace std;
 
+int test = 2;
 
 #pragma pack(push, 1)
 struct BytedStuff {
-	const char* str = "very specific string";
+	string str = "very specific string";
 };
 #pragma pack(pop)
 
-int main() {
+int working() {
 	BytedStuff newStructInit;
-	std::cout << searchApplicationMemory<const char*>(1, "",5000,2,13520);
+	int* intPtr = &test;
+	
+	//DWORD PID = 30884;
+	//HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, PID);
+	//MEMORY_BASIC_INFORMATION memInfo;
+	//cout << (void*)VirtualQueryEx(hProcess, NULL, &memInfo, sizeof(memInfo)) << endl;
+	//cout << memInfo.BaseAddress << endl;
+	//cout << (void*)hProcess << endl;
+	//system("pause");
+	return -1;
+}
 
+int main() {
+	int n = 2;
+	asm(""); 
 }
