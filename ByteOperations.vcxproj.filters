@@ -18,13 +18,25 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="OpenGLMan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Possibly Remember\Memory Management\common_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\memoryMan.h">
+    <ClInclude Include="memoryMan.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OpenGLMan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="image_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="freeglut.dll" />
   </ItemGroup>
 </Project>
