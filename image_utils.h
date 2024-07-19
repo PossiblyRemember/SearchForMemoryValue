@@ -5,6 +5,8 @@
 #include <iostream>
 #include <exception>
 
+using namespace std;
+
 // Pack the BMP struct to save memory
 #pragma pack(push, 1)
 struct BMPHeader {
@@ -37,8 +39,8 @@ void writeBMP(const char* input, int width, const char* output) {
     dataInit.close();
 
     // Calculate the height based on the total size of fileData and the width
-    int dataSize = fileData.size();
-    int height = dataSize / (width * 3); // Each pixel has 3 bytes (BGR)
+    size_t dataSize = fileData.size();
+    size_t height = dataSize / (width * 3); // Each pixel has 3 bytes (BGR)
 
     std::ofstream outFile(output, std::ios::binary);
     if (!outFile) {

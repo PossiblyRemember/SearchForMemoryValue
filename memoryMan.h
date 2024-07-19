@@ -36,7 +36,7 @@ namespace PRUtils {
 		}
 
 		template <typename T>
-		T *searchMemory(T target, int range, int loops) {
+		T &searchMemory(T target, int range, int loops) {
 			size_t size = sizeof(target);
 			size_t alignment = alignment_of_v<T>;
 			void* memoryBlock = malloc(size + alignment - 1);
@@ -58,7 +58,7 @@ namespace PRUtils {
 #ifdef DEBUG
 							cout << "CAUGHT: " << *dataAddress << endl;
 #endif
-							return dataAddress;
+							return *dataAddress;
 						}
 #ifdef DEBUG
 						else {
@@ -82,7 +82,7 @@ namespace PRUtils {
 #ifdef DEBUG
 							cout << "CAUGHT: " << *dataAddress << endl;
 #endif
-							return dataAddress;
+							return *dataAddress;
 						}
 #ifdef DEBUG
 						else {
