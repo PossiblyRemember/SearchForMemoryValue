@@ -9,11 +9,9 @@
 using namespace std;
 using namespace PRUtils::memory;
 
-string *out;
+string out;
 string searchMemMain() {
-	*out = searchMemory<string>("test01", 5000, 2);
-	*out = "new value";
-	return *out;
+	return searchMemory<string>("test01", 5000, 2);
 }
 
 int code() {
