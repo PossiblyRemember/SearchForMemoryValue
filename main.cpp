@@ -9,25 +9,14 @@
 using namespace std;
 using namespace PRUtils::memory;
 
-string out;
-string searchMemMain() {
-	return searchMemory<string>("test01", 5000, 2);
-}
 
-int code() {
-	thread th02(searchMemMain);
-	th02.join();
-	cout << &out << endl;
-	system("pause");
-	return 1;
+int main() {
+	thread th00(mcp);
+	Sleep(10000);
+	const char* in = searchMemory<const char*>("test01", 5000, 2);
+	const char** ptr = &in;
+	return 0;
 }
-
-void main(int argc, char** argv) {
-	thread th01(code);
-	mcp();
-	th01.join();
-}
-
 
 
 
