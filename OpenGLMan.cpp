@@ -24,7 +24,7 @@ void display() {
     glBegin(GL_TEXTURE_2D); // Start rendering test message
 
     glColor3f(1.0, 1.0, 1.0);
-    renderBitmapString(-0.3, 0, GLUT_BITMAP_HELVETICA_18, print.c_str());
+    renderBitmapString((float)-0.3, 0, GLUT_BITMAP_HELVETICA_18, print.c_str());
 
 
     glEnd(); // End drawing the quad
@@ -64,7 +64,7 @@ int mcp() {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_SRGB);
     glutInitWindowSize(800, 600);
-    glutCreateWindow("Colored Box");
+    glutCreateWindow_ATEXIT_HACK("Colored Box");
 
     initOpenGLWin(); // Initialize OpenGL settings
 

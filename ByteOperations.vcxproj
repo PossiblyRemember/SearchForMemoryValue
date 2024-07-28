@@ -126,6 +126,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>H:\Dev\Includes\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>freeglut.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <UACExecutionLevel>RequireAdministrator</UACExecutionLevel>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,10 +150,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fileMan.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="OpenGLMan.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="fileMan.h" />
     <ClInclude Include="image_utils.h" />
     <ClInclude Include="memoryMan.h" />
     <ClInclude Include="OpenGLMan.h" />

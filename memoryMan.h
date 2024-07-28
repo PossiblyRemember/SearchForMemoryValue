@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <windows.h>
 #include <psapi.h>
+#include "fileman.h"
 using namespace std;
 //namespace PRUtils {
 //	namespace memory {
@@ -41,98 +42,20 @@ namespace PRUtils {
 			return character;
 		}*/
 
-		DWORD_PTR GetProcessBaseAddress(HANDLE hProcess) {
-			DWORD_PTR baseAddress = 0;
-			if (hProcess) {
-				HMODULE hMod;
-				DWORD cbNeeded;
-				if (EnumProcessModulesEx(hProcess, &hMod, sizeof(hMod), &cbNeeded, NULL)) {
-					baseAddress = (DWORD_PTR)hMod;
-				}
-				else {
-					std::cerr << "PROCESS MODULE FAILED" << std::endl;
-				}
-			}
-			else {
-				std::cerr << "OPEN PROCESS FAILED" << std::endl;
-			}
-			return baseAddress;
-		}
-
 		template <typename T>
-		T &searchMemory(T target, int range, int loops) {
-			size_t size = sizeof(target);
-			size_t alignment = alignment_of_v<T>;
-			void* memoryBlock = malloc(size + alignment - 1);
-			size_t runs;
-			bool caught_target = false;
-			uintptr_t alignedAddress = ((uintptr_t)&memoryBlock + alignment - 1) & ~(alignment - 1);
-			for (int i = 0; i < loops; i++) {
-#ifdef DEBUG
-				cout << "Looping\n" << i % 2 << endl;
-#endif
-				if (i % 2 == 0) {
-					runs = 0;
-					for (size_t offset = 0; !caught_target && runs < range; offset -= alignment, runs++) {
-						uintptr_t offsetAddress = alignedAddress + offset;
-						T* dataAddress = reinterpret_cast<T*>(offsetAddress);
-						//__try {
-						if (*dataAddress == target && dataAddress != &target) {
-							caught_target = true;
-#ifdef DEBUG
-							cout << "CAUGHT: " << *dataAddress << endl;
-#endif
-							return *dataAddress;
-						}
-#ifdef DEBUG
-						else {
-							cout << "Rerun a " << endl << (void*)offsetAddress << endl << dataAddress << endl;
-						}
-#endif
-						//}
-						//__except (EXCEPTION_ACCESS_VIOLATION or EXCEPTION_EXECUTE_HANDLER) {
-						//	cerr << "RUNTIME ERROR";
-						//}
-					}
-				}
-				else {
-					runs = 0;
-					for (size_t offset = 0; !caught_target && runs < range; offset += alignment, runs++) {
-						uintptr_t offsetAddress = alignedAddress + offset;
-						T* dataAddress = reinterpret_cast<T*>(offsetAddress);
-						//__try {
-						if (*dataAddress == target && dataAddress != &target) {
-							caught_target = true;
-#ifdef DEBUG
-							cout << "CAUGHT: " << *dataAddress << endl;
-#endif
-							return *dataAddress;
-						}
-#ifdef DEBUG
-						else {
-							cout << "Rerun b " << endl << (void*)offsetAddress << endl << dataAddress << endl;
-						}
-#endif
-						//}
-						//__except (EXCEPTION_ACCESS_VIOLATION or EXCEPTION_EXECUTE_HANDLER) {
-						//	cerr << "RUNTIME ERROR";
-						//}
-					}
-				}
-				if (!caught_target) {
-					throw("SEARCH FAILED");
-				}
+		T& searchMemory(const char* name, T target, int range, int loops) {
+			HWND hwnd = FindWindowA(NULL, name);
+			if (!hwnd) {
+				throw runtime_error("Window not found!");
 			}
-		}
+			DWORD pid;
+			GetWindowThreadProcessId(hwnd, &pid);
+			HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, 0, pid);
+			if (!hProcess) {
+				throw runtime_error("Thread not found!");
+			}
+			PRUtils::programs::GetBaseAddress(hwnd);
 
-
-		template <typename T>
-		T searchApplicationMemory(size_t alignment, T target, int range, int loops, DWORD PID) {
-			HANDLE hProcess = OpenProcess(PROCESS_VM_READ, FALSE, PID);
-			DWORD_PTR baseAddress = GetProcessBaseAddress(hProcess);
-			T buffer;
-			ReadProcessMemory(hProcess, (LPCVOID)(baseAddress), &buffer, sizeof(target), NULL);
-			return 0;
 		}
 	}
 }

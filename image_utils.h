@@ -49,15 +49,15 @@ void writeBMP(const char* input, int width, const char* output) {
     }
 
     // BMP header setup
-    BMPHeader header;
+    BMPHeader header{};
     header.signature = 0x4D42; // "BM"
-    header.fileSize = sizeof(BMPHeader) + dataSize;
+    header.fileSize = sizeof(BMPHeader) + (uint32_t)dataSize;
     header.reserved1 = 0;
     header.reserved2 = 0;
     header.dataOffset = sizeof(BMPHeader);
     header.headerSize = 40;
     header.width = width;
-    header.height = height;
+    header.height = (int32_t)height;
     header.planes = 1;
     header.bitsPerPixel = 24; // 24 bits per pixel (RGB)
     header.compression = 0;   // BI_RGB (no compression)
@@ -73,9 +73,9 @@ void writeBMP(const char* input, int width, const char* output) {
     int paddingSize = (4 - (width * 3) % 4) % 4;
 
     // Write pixel data row by row (BMP is stored bottom-to-top)
-    for (int y = height - 1; y >= 0; --y) {
+    for (int y = (int)height - 1; y >= 0; --y) {
         for (int x = 0; x < width; ++x) {
-            int index = ((height - 1 - y) * width + x) * 3; // Each pixel has 3 bytes (BGR)
+            int index = (((int)height - 1 - y) * width + x) * 3; // Each pixel has 3 bytes (BGR)
 
             // Ensure index is within bounds of fileData
             if (index + 2 < dataSize) {

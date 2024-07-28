@@ -8,13 +8,18 @@
 
 using namespace std;
 using namespace PRUtils::memory;
+using namespace PRUtils::programs;
 
 
 int main() {
-	thread th00(mcp);
-	Sleep(10000);
-	const char* in = searchMemory<const char*>("test01", 5000, 2);
-	const char** ptr = &in;
+	//thread th00(mcp);
+	//Sleep(10000);
+	/*const char* in = searchMemory<const char*>("Colored Box", "test01", 5000, 2);
+	const char** ptr = &in;*/
+	//cout << GetBaseAddress("Terminal");
+	cout << GetBaseAddress("Calculator");
+
+
 	return 0;
 }
 
