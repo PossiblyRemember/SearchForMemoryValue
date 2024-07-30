@@ -12,12 +12,18 @@ using namespace PRUtils::programs;
 
 
 int main() {
+	TOKEN_PRIVILEGES privvy{
+		privvy.Privileges::
+	};
+	AdjustTokenPrivileges(GetCurrentProcess(),false,,0,NULL,NULL);
 	//thread th00(mcp);
 	//Sleep(10000);
 	/*const char* in = searchMemory<const char*>("Colored Box", "test01", 5000, 2);
 	const char** ptr = &in;*/
 	//cout << GetBaseAddress("Terminal");
-	cout << GetBaseAddress("Calculator");
+	
+	HANDLE handle = OpenProcess(PROCESS_ALL_ACCESS,0, FindWindowA(nullptr, "Calculator"));
+	GetBaseAddress();
 
 
 	return 0;
