@@ -1,11 +1,11 @@
-#include "fileMan.h"
+#include "memoryMan.h"
 
 using namespace std;
 
 namespace PRUtils {
-	namespace programs {
+	namespace memory {
 		void* GetBaseAddress(DWORD dwFlags, DWORD PID) {
-			HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,PID);
+			HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, PID);
 			if (snapshot == INVALID_HANDLE_VALUE) {
 				cerr << "Invalid, exiting.";
 				return(0);
@@ -19,7 +19,7 @@ namespace PRUtils {
 				return(0);
 			}
 			do {
-				cout << "Current module is " << modEntry.szModule << " with a base address of " << modEntry.modBaseAddr << "\n";
+				printf("Base address of Module %s is at address %p\n",modEntry.szModule,modEntry.modBaseAddr);
 
 			} while (Module32Next(snapshot, &modEntry));
 		}
