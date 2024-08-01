@@ -4,9 +4,11 @@
 #include <iostream>
 #include <string>
 #include <TlHelp32.h>
-#include <iostream>
+#include <cstdio>
+#include <vector>
 namespace PRUtils {
 	namespace memory {
-		void* GetBaseAddress(DWORD dwFlags, DWORD PID);
+		std::vector<MODULEENTRY32> GetModules(unsigned long PID);
+		void* SearchMemory(HANDLE hProcess, MODULEENTRY32 module);
 	}
 }

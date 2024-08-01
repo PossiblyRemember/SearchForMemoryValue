@@ -31,9 +31,22 @@ int main() {
 	if (!AdjustTokenPrivileges(token, false, &privvy, 0, NULL, NULL)) {
 		cout << "ERROR: " << GetLastError();
 	};
-	HWND calculatorWindow = FindWindowA(nullptr, "Calculator");
-	unsigned long ProcessID = GetProcessId(calculatorWindow);
-	PRUtils::memory::GetBaseAddress(NULL,ProcessID);
+	unsigned long PID;
+	cin >> PID;
+	// check if process id is null
+	if (PID == 0) { 
+		printf("Invalid Process ID");
+		return 0;
+	}
+	vector<MODULEENTRY32> modules = GetModules(PID);
+	HANDLE process = OpenProcess(PROCESS_VM_READ, false, PID);
+	if (process == INVALID_HANDLE_VALUE) {
+		cerr << "Invalid OpenProcess.\n";
+		return 0;
+	}
+	for (MODULEENTRY32 mod : modules) {
+		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
+	}
 	return 0;
 }
 
