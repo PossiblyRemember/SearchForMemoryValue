@@ -47,10 +47,11 @@ int main() {
 	for (MODULEENTRY32 mod : modules) {
 		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
 	}*/
-	char buffer[2048];
-	ReadProcessMemory(process, modules[1].modBaseAddr,&buffer,sizeof(buffer),nullptr);
-	cout << buffer;
-
+	for (unsigned int i = 0; i < 100; ++i) {
+		char buffer[2048];
+		ReadProcessMemory(process, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
+		printf("%p, %s\n", buffer, buffer);
+	}
 	return 0;
 }
 
