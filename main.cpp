@@ -47,11 +47,7 @@ int main() {
 	for (MODULEENTRY32 mod : modules) {
 		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
 	}*/
-	for (unsigned int i = 0; i < 100; ++i) {
-		char buffer[2048];
-		ReadProcessMemory(process, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
-		printf("%p, %s\n", buffer, buffer);
-	}
+	SearchMemory<const char*>("find me!", process, modules);
 	return 0;
 }
 
