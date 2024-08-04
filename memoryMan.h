@@ -9,6 +9,6 @@
 namespace PRUtils {
 	namespace memory {
 		std::vector<MODULEENTRY32> GetModules(unsigned long PID);
-		void* SearchMemory(HANDLE hProcess, MODULEENTRY32 module);
+		char* SearchMemory(HANDLE hProcess, MODULEENTRY32 module);
 	}
 }

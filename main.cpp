@@ -43,10 +43,14 @@ int main() {
 	if (process == INVALID_HANDLE_VALUE) {
 		cerr << "Invalid OpenProcess.\n";
 		return 0;
-	}
+	}/*
 	for (MODULEENTRY32 mod : modules) {
 		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
-	}
+	}*/
+	char buffer[2048];
+	ReadProcessMemory(process, modules[1].modBaseAddr,&buffer,sizeof(buffer),nullptr);
+	cout << buffer;
+
 	return 0;
 }
 

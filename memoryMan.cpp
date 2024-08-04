@@ -32,13 +32,13 @@ namespace PRUtils {
 
 			} while (Module32Next(snapshot, &modEntry));
 			return modules;
-		}
-		void* SearchMemory(HANDLE hProcess,MODULEENTRY32 module) {
+		}/*
+		char* SearchMemory(HANDLE hProcess,MODULEENTRY32 module) {
 			{
-				void* buffer;
+				char buffer[1024];
 				ReadProcessMemory(hProcess,module.modBaseAddr,&buffer,module.modBaseSize,NULL);
 				return buffer;
 			}
-		}
+		}*/
 	}
 }
