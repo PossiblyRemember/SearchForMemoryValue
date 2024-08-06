@@ -47,7 +47,7 @@ int main() {
 	for (MODULEENTRY32 mod : modules) {
 		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
 	}*/
-	SearchMemory<const char*>("find me!", process, modules);
+	SearchMemory<const char*>("DOS mode", process, modules);
 	return 0;
 }
 
