@@ -10,8 +10,20 @@
 using namespace std;
 using namespace PRUtils::memory;
 
-
 int main() {
+	// testing
+	const char* stringSource = "this is a test message";
+	vector<char> buffer;
+	for (unsigned int i = 0; i < strlen(stringSource); ++i) {
+		buffer[i] = stringSource[i];
+	}
+	//cout << buffer;
+}
+
+
+
+
+int mainN() {
 	HANDLE token;
 	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &token);
 	LUID luid; 
