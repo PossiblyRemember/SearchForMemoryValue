@@ -6,24 +6,26 @@
 #include "image_utils.h"
 #include <future>
 #include <TlHelp32.h>
-
 using namespace std;
 using namespace PRUtils::memory;
 
-int main() {
+int mainV() {
 	// testing
 	const char* stringSource = "this is a test message";
 	vector<char> buffer;
 	for (unsigned int i = 0; i < strlen(stringSource); ++i) {
-		buffer[i] = stringSource[i];
+		buffer.push_back(stringSource[i]);
 	}
-	//cout << buffer;
+	buffer.push_back('\0');
+	buffer.shrink_to_fit();
+	cout << buffer.capacity() << endl;
+	cout << &buffer[0];
 }
 
 
 
 
-int mainN() {
+int main() {
 	HANDLE token;
 	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &token);
 	LUID luid; 

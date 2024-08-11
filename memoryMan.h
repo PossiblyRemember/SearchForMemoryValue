@@ -22,9 +22,10 @@ namespace PRUtils {
 			const size_t length = std::strlen(target)+1;
 			unsigned char* ptr = nullptr;
 			bool caught = false;
+
 			for (unsigned long i = 0; !caught; i++) {
-				char buffer[1024];
-				char string[1024];
+				std::vector<char> buffer;
+				std::vector<char> string;
 				ReadProcessMemory(hProcess, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
 				string[i] = buffer[i];
 				std::printf("ALIGNMENT: %zi\nSIZE: %zi\nBUFFER: %s\n", alignment, size, string);
