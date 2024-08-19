@@ -25,7 +25,10 @@ namespace PRUtils {
 			unsigned int place = 0;
 			std::vector<char> buffer;
 			std::vector<char> string;
-
+			if (modules[0] != INVALID_HANDLE_VALUE or NULL) {
+				cerr << "\nFAILED, BAD MODULE HANDLE";
+				abort();
+			}
 			for (byte* i = modules[0].modBaseAddr; i < modules[modules.size()/sizeof(T)].modBaseAddr && score < length; ++i) {
 				++place;
 				ReadProcessMemory(hProcess, i, &buffer, sizeof(buffer), nullptr);
