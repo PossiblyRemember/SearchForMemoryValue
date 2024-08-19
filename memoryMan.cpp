@@ -31,6 +31,7 @@ namespace PRUtils {
 				modules.push_back(modEntry);
 
 			} while (Module32Next(snapshot, &modEntry));
+			modules.shrink_to_fit();
 			return modules;
 		}
 

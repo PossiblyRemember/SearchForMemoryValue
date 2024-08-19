@@ -21,17 +21,17 @@ namespace PRUtils {
 			const size_t size = sizeof(target);
 			const size_t length = std::strlen(target)+1;
 			unsigned char* ptr = nullptr;
-			bool caught = false;
+			unsigned int score = 0;
+			unsigned int place = 0;
+			std::vector<char> buffer;
+			std::vector<char> string;
 
-			for (unsigned long i = 0; !caught; i++) {
-				std::vector<char> buffer;
-				std::vector<char> string;
-				ReadProcessMemory(hProcess, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
-				string[i] = buffer[i];
-				std::printf("ALIGNMENT: %zi\nSIZE: %zi\nBUFFER: %s\n", alignment, size, string);
-				if (string == target) {
-					ptr = (unsigned char*)(modules[0].modBaseAddr + i);
-					caught = true;
+			for (byte* i = modules[0].modBaseAddr; i < modules[modules.size()/sizeof(T)].modBaseAddr && score < length; ++i) {
+				++place;
+				ReadProcessMemory(hProcess, i, &buffer, sizeof(buffer), nullptr);
+				if (buffer[place] == target[place]) {
+					string.push_back(buffer[place]);
+					++score;
 				}
 			}
 			return ptr;

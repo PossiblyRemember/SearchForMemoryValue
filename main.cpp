@@ -20,6 +20,7 @@ int mainV() {
 	buffer.shrink_to_fit();
 	cout << buffer.capacity() << endl;
 	cout << &buffer[0];
+	return 0;
 }
 
 
