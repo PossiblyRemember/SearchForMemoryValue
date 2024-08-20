@@ -54,7 +54,7 @@ int main() {
 		return 0;
 	}
 	vector<MODULEENTRY32> modules = GetModules(PID);
-	HANDLE process = OpenProcess(PROCESS_VM_READ, false, PID);
+	HANDLE process = OpenProcess(PROCESS_ALL_ACCESS, false, PID);
 	if (process == INVALID_HANDLE_VALUE) {
 		cerr << "Invalid OpenProcess.\n";
 		return 0;
