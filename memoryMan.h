@@ -22,19 +22,19 @@ namespace PRUtils {
 			const size_t length = std::strlen(target)+1;
 			unsigned char* ptr = nullptr;
 			unsigned int score = 0;
-			unsigned int place = 0;
-			std::vector<char> buffer;
-			std::vector<char> string;
-			if (modules[0].hModule != INVALID_HANDLE_VALUE or NULL) {
+			size_t count = 0;
+			std::vector<char> buffer2;
+			if (modules[0].hModule == INVALID_HANDLE_VALUE or NULL) {
 				std::cerr << "\nFAILED, BAD MODULE HANDLE";
-				abort();
 			}
-			for (byte i = *modules[0].modBaseAddr; i < *modules[modules.size()/sizeof(T)].modBaseAddr && score < length; ++i) {
-				++place;
-				ReadProcessMemory(hProcess, &i, &buffer, sizeof(buffer), nullptr);
-				if (buffer[place] == target[place]) {
-					string.push_back(buffer[place]);
-					++score;
+			for (unsigned int g = 0; g < modules.capacity(); ++g) {
+				unsigned long long difference = modules[g].modBaseAddr - modules[g + 1].modBaseAddr;
+				for (unsigned int i = 0; score < length or i < difference; ++i) {
+					char buffer[2048];
+					ReadProcessMemory(hProcess, modules[g].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
+					if (buffer != " " or "\n" or "\0") {
+						printf("module: %s\nbuffer value: %s", modules[g].szModule, buffer);
+					}
 				}
 			}
 			return ptr;
