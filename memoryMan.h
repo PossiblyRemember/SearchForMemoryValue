@@ -6,12 +6,12 @@
 #include <TlHelp32.h>
 #include <cstdio>
 #include <vector>
+#include <format>
 namespace PRUtils {
 	namespace memory {
 		std::vector<MODULEENTRY32> GetModules(unsigned long PID);
 		template<typename T>
-		unsigned char* SearchMemory(T target, HANDLE hProcess, std::vector<MODULEENTRY32>& modules) {
-
+		unsigned char* SearchMemory(T target, HANDLE hProcess, std::vector<MODULEENTRY32>& modules, void* output) {
 			// buffer
 			// char buffer[2048];
 			// code to read memory
@@ -30,11 +30,17 @@ namespace PRUtils {
 			for (unsigned int g = 0; g < modules.capacity(); ++g) {
 				unsigned long long difference = modules[g].modBaseAddr - modules[g + 1].modBaseAddr;
 				for (unsigned int i = 0; score < length or i < difference; ++i) {
-					char buffer[2048];
+					char buffer;
+					std::string wText = std::format<>("Module: {}, Iteration: {}", g, i);
+					SetConsoleTitleA(wText.c_str());
 					ReadProcessMemory(hProcess, modules[g].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
-					if (buffer != " " or "\n" or "\0") {
-						printf("module: %s\nbuffer value: %s", modules[g].szModule, buffer);
+					if (buffer == '\0') {
+						std::cout << '\n';
 					}
+					std::cout << buffer;
+					/*if (buffer != " " or "\n" or "\0") {
+						printf("module: %s\nbuffer value: %s\n", modules[g].szModule, buffer);
+					}*/
 				}
 			}
 			return ptr;

@@ -27,6 +27,7 @@ int mainV() {
 
 
 int main() {
+	istream& input = cin;
 	HANDLE token;
 	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &token);
 	LUID luid; 
@@ -47,7 +48,7 @@ int main() {
 		cout << "ERROR: " << GetLastError();
 	};
 	unsigned long PID;
-	cin >> PID;
+	input >> PID;
 	// check if process id is null
 	if (PID == 0) { 
 		printf("Invalid Process ID");
@@ -62,7 +63,12 @@ int main() {
 	for (MODULEENTRY32 mod : modules) {
 		printf("Module %s with an address of %p containing the following: %s\n", mod.szModule, mod.modBaseAddr, (const char*)SearchMemory(process, mod));
 	}*/
-	SearchMemory<const char*>("DOS mode", process, modules);
+
+	// Create input stream. (I'm deciding to document more.)
+	char* data = new char[2048];
+	SearchMemory<const char*>("DOS mode", process, modules,&data);
+	cout << data;
+	delete[] data;
 	return 0;
 }
 
