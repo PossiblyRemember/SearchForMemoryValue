@@ -22,27 +22,45 @@ namespace PRUtils {
 			const size_t length = std::strlen(target)+1;
 			unsigned char* ptr = nullptr;
 			unsigned int score = 0;
+			unsigned int probability = 0;
 			size_t count = 0;
+			unsigned char* tempptr = nullptr;
 			std::vector<char> buffer2;
 			if (modules[0].hModule == INVALID_HANDLE_VALUE or NULL) {
 				std::cerr << "\nFAILED, BAD MODULE HANDLE";
 			}
-			for (unsigned int g = 0; g < modules.capacity(); ++g) {
-				unsigned long long difference = modules[g].modBaseAddr - modules[g + 1].modBaseAddr;
+			for (unsigned int g = 0; g < modules.capacity() or score != length; ++g) {
+				unsigned long long difference = modules[g+1].modBaseAddr - modules[g].modBaseAddr;
 				for (unsigned int i = 0; score < length or i < difference; ++i) {
+					unsigned int ii = 0;
 					char buffer;
-					std::string wText = std::format<>("Module: {}, Iteration: {}", g, i);
+					unsigned int p = 0;
+					if (score) {
+						p = 1 / (length / score) * 100;
+					}
+					std::string wText = std::format<>("Module: {}, Iteration: {}, Probability: {}%", g, i, p);
 					SetConsoleTitleA(wText.c_str());
 					ReadProcessMemory(hProcess, modules[g].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
+#ifdef DEBUG
 					if (buffer == '\0') {
 						std::cout << '\n';
 					}
 					std::cout << buffer;
-					/*if (buffer != " " or "\n" or "\0") {
-						printf("module: %s\nbuffer value: %s\n", modules[g].szModule, buffer);
-					}*/
+					std::wcout << buffer;
+#endif
+					if (buffer == target[ii]) {
+						tempptr = modules[g].modBaseAddr - score;
+						++score;
+						++ii;
+					}
+					else {
+						score = 0;
+						ii = 0;
+					}
 				}
 			}
+			ptr = tempptr;
+
 			return ptr;
 		}
 	}

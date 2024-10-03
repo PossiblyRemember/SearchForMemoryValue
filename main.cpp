@@ -8,10 +8,9 @@
 #include <TlHelp32.h>
 using namespace std;
 using namespace PRUtils::memory;
-
 int mainV() {
 	// testing
-	const char* stringSource = "this is a test message";
+	const char* stringSource = "DOS MODE";
 	vector<char> buffer;
 	for (unsigned int i = 0; i < strlen(stringSource); ++i) {
 		buffer.push_back(stringSource[i]);
