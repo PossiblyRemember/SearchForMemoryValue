@@ -1,4 +1,4 @@
-#include "memoryMan.h"
+#include "memoryMan.hpp"
 
 using namespace std;
 
@@ -35,5 +35,58 @@ namespace PRUtils {
 			return modules;
 		}
 
+		unsigned char* SearchMemory(const char* target, HANDLE hProcess, std::vector<MODULEENTRY32>& modules) {
+			// buffer
+			// char buffer[2048];
+			// code to read memory
+			// ReadProcessMemory(process, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
+
+			const size_t alignment = 1;
+			const size_t size = sizeof(target);
+			const size_t length = strlen(target) - 1;
+			unsigned char* ptr = nullptr;
+			unsigned int score = 0;
+			unsigned long long probIterator = 0; // initialize iterator to change string array location
+			size_t count = 0;
+			unsigned int modulePos = 0;
+			if (modules[0].hModule == INVALID_HANDLE_VALUE || NULL) {
+				std::cerr << "\nFAILED, BAD MODULE HANDLE";
+			}
+			for (unsigned int moduleCount = 0; moduleCount < modules.capacity();) {
+				unsigned long long difference = modules[moduleCount].modBaseSize;
+				for (modulePos = 0; probIterator < length && modulePos < difference; ++modulePos) {
+					static char buffer = 0; // init char buffer to read to
+
+					std::string wText = std::format("Module: {}, Iteration: {}, Probability: {}%", moduleCount, modulePos, (float)probIterator / (float)length * 100.0f);
+
+#ifdef DEBUG
+					SetConsoleTitleA(wText.c_str());
+#endif
+
+					ReadProcessMemory(hProcess, modules[moduleCount].modBaseAddr + modulePos, &buffer, sizeof(buffer), nullptr);
+
+					if (buffer == target[probIterator]) {
+						++probIterator;
+					}
+					else {
+						probIterator = 0;
+					}
+					ptr = modules[moduleCount].modBaseAddr + modulePos;
+
+#ifdef CHARDEBUG
+					if (buffer == '\0') {
+						std::cout << '\n';
+					}
+					std::cout << buffer;
+					std::wcout << buffer;
+#endif
+
+				}
+				++moduleCount;
+			}
+			printf("FOUND SOMETHING!");
+
+			return ptr-length+1;
+		}
 	}
 }

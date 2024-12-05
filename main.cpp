@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <string>
 #include <iostream>
-#include "memoryMan.h"
+#include "memoryMan.hpp"
 #include "OpenGLMan.h"
 #include "image_utils.h"
 #include <future>
@@ -31,19 +31,19 @@ int main() {
 	OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &token);
 	LUID luid; 
 	if (!LookupPrivilegeValueA(
-		NULL,            // lookup privilege on local system
+		nullptr,            // lookup privilege on local system
 		"SeDebugPrivilege",   // privilege to lookup 
 		&luid))        // receives LUID of privilege
 	{
 		printf("LookupPrivilegeValue error: %u\n", GetLastError());
 		return FALSE;
 	}
-	TOKEN_PRIVILEGES privvy{
-		privvy.PrivilegeCount = 1,
-		privvy.Privileges[0].Luid = luid,
-		privvy.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED
+	TOKEN_PRIVILEGES new_privileges{
+		new_privileges.PrivilegeCount = 1,
+		new_privileges.Privileges[0].Luid = luid,
+		new_privileges.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED
 	};
-	if (!AdjustTokenPrivileges(token, false, &privvy, 0, NULL, NULL)) {
+	if (!AdjustTokenPrivileges(token, false, &new_privileges, 0, nullptr, nullptr)) {
 		cout << "ERROR: " << GetLastError();
 	};
 	unsigned long PID;
@@ -65,7 +65,7 @@ int main() {
 
 	// Create input stream. (I'm deciding to document more.)
 	char* data = new char[2048];
-	SearchMemory<const char*>("DOS mode", process, modules,&data);
+	WriteProcessMemory(process,SearchMemory("DOS mode", process, modules,&data),"BOSS RUN",8,nullptr);
 	cout << data;
 	delete[] data;
 	return 0;

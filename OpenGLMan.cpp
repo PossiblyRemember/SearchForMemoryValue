@@ -59,8 +59,8 @@ void debug() {
 }
 
 int mcp() {
-    int argc = NULL;
-    char** argv = NULL;
+    int argc = 0;
+    char** argv = 0;
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_SRGB);
     glutInitWindowSize(800, 600);

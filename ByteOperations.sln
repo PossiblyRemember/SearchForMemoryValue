@@ -7,12 +7,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ByteOperations", "ByteOpera
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug and Continue|x64 = Debug and Continue|x64
+		Debug and Continue|x86 = Debug and Continue|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug and Continue|x64.ActiveCfg = Debug and Continue|x64
+		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug and Continue|x64.Build.0 = Debug and Continue|x64
+		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug and Continue|x86.ActiveCfg = Debug and Continue|Win32
+		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug and Continue|x86.Build.0 = Debug and Continue|Win32
 		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug|x64.ActiveCfg = Debug|x64
 		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug|x64.Build.0 = Debug|x64
 		{7D1801F6-97F4-4D36-881E-B3B515C0E51D}.Debug|x86.ActiveCfg = Debug|Win32

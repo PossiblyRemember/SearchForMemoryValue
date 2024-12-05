@@ -1,6 +1,5 @@
 #pragma once
 #define NDEBUG
-#include <GL/freeglut.h>
 #include <iostream>
 #include <thread>
 

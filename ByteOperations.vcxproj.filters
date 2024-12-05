@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OpenGLMan.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="memoryMan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,10 +26,7 @@
     <ClInclude Include="Possibly Remember\Memory Management\common_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="memoryMan.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLMan.h">
+    <ClInclude Include="memoryMan.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="image_utils.h">
