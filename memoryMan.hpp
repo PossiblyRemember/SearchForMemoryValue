@@ -7,13 +7,15 @@
 #include <cstdio>
 #include <vector>
 #include <format>
-#define DEBUG
-#define CHARDEBUG
+//#define DEBUG
+//#define CHARDEBUG
 
 namespace PRUtils {
 	namespace memory {
 		std::vector<MODULEENTRY32> GetModules(unsigned long PID);
 
-		unsigned char* SearchMemory(const char* target, HANDLE hProcess, std::vector<MODULEENTRY32>& modules, void* output);
+		void* SearchMemory(HANDLE hProcess, const char* target);
+
+		bool ReplaceMemory(HANDLE hProcess, const char* target, const char* replacement);
 	}
 }

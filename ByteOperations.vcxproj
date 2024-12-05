@@ -192,7 +192,7 @@
       <AssemblerOutput>AssemblyCode</AssemblerOutput>
       <EnableModules>false</EnableModules>
       <BuildStlModules>false</BuildStlModules>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

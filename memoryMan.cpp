@@ -35,16 +35,18 @@ namespace PRUtils {
 			return modules;
 		}
 
-		unsigned char* SearchMemory(const char* target, HANDLE hProcess, std::vector<MODULEENTRY32>& modules) {
+		void* SearchMemory(HANDLE hProcess, const char* target) {
 			// buffer
 			// char buffer[2048];
 			// code to read memory
 			// ReadProcessMemory(process, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
 
+			std::vector<MODULEENTRY32> modules = GetModules(GetProcessId(hProcess));
+
 			const size_t alignment = 1;
 			const size_t size = sizeof(target);
 			const size_t length = strlen(target) - 1;
-			unsigned char* ptr = nullptr;
+			void* ptr = nullptr;
 			unsigned int score = 0;
 			unsigned long long probIterator = 0; // initialize iterator to change string array location
 			size_t count = 0;
@@ -84,9 +86,17 @@ namespace PRUtils {
 				}
 				++moduleCount;
 			}
-			printf("FOUND SOMETHING!");
+			if (probIterator != length) {
+				printf("\nNothing.\n");
+				return nullptr;
+			}
 
-			return ptr-length+1;
+			return (void*)((long long)ptr - length + 1);
+		}
+
+		bool ReplaceMemory(HANDLE hProcess, const char* target, const char* replacement)
+		{
+			return false;
 		}
 	}
 }
