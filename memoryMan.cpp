@@ -4,6 +4,65 @@ using namespace std;
 
 namespace PRUtils {
 	namespace memory {
+		namespace debug {
+			std::string MemoryProtectionToString(DWORD protect) {
+				switch (protect) {
+				case PAGE_NOACCESS:          return "PAGE_NOACCESS";
+				case PAGE_READONLY:          return "PAGE_READONLY";
+				case PAGE_READWRITE:         return "PAGE_READWRITE";
+				case PAGE_WRITECOPY:         return "PAGE_WRITECOPY";
+				case PAGE_EXECUTE:           return "PAGE_EXECUTE";
+				case PAGE_EXECUTE_READ:      return "PAGE_EXECUTE_READ";
+				case PAGE_EXECUTE_READWRITE: return "PAGE_EXECUTE_READWRITE";
+				case PAGE_EXECUTE_WRITECOPY: return "PAGE_EXECUTE_WRITECOPY";
+				case PAGE_GUARD:             return "PAGE_GUARD";
+				case PAGE_NOCACHE:           return "PAGE_NOCACHE";
+				case PAGE_WRITECOMBINE:      return "PAGE_WRITECOMBINE";
+				default:                     return "UNKNOWN";
+				}
+			}
+
+			// Helper function to translate memory state constants to a readable string
+			std::string MemoryStateToString(DWORD state) {
+				switch (state) {
+				case MEM_COMMIT:  return "MEM_COMMIT";
+				case MEM_RESERVE: return "MEM_RESERVE";
+				case MEM_FREE:    return "MEM_FREE";
+				default:          return "UNKNOWN";
+				}
+			}
+
+			// Helper function to translate memory type constants to a readable string
+			std::string MemoryTypeToString(DWORD type) {
+				switch (type) {
+				case MEM_PRIVATE:   return "MEM_PRIVATE";
+				case MEM_MAPPED:    return "MEM_MAPPED";
+				case MEM_IMAGE:     return "MEM_IMAGE";
+				default:            return "UNKNOWN";
+				}
+			}
+
+			void QueryMemory(HANDLE hProcess, void* address) {
+				MEMORY_BASIC_INFORMATION mbi;
+				SIZE_T result = VirtualQueryEx(hProcess, address, &mbi, sizeof(mbi));
+				if (result == 0) {
+					std::cerr << "VirtualQueryEx failed. Error: " << GetLastError() << "\n";
+					CloseHandle(hProcess);
+					return;
+				}
+
+				std::cout << "\nMemory Region Information:\n";
+				std::cout << "---------------------------------------------------\n";
+				std::cout << "Base Address:        " << mbi.BaseAddress << "\n";
+				std::cout << "Allocation Base:     " << mbi.AllocationBase << "\n";
+				std::cout << "Allocation Protect:  " << MemoryProtectionToString(mbi.AllocationProtect) << "\n";
+				std::cout << "Region Size:         " << mbi.RegionSize << " bytes\n";
+				std::cout << "State:               " << MemoryStateToString(mbi.State) << "\n";
+				std::cout << "Protect:             " << MemoryProtectionToString(mbi.Protect) << "\n";
+				std::cout << "Type:                " << MemoryTypeToString(mbi.Type) << "\n";
+				std::cout << "---------------------------------------------------\n";
+			}
+		}
 		std::vector<MODULEENTRY32> GetModules(unsigned long PID) {
 			unsigned long cPID = GetCurrentProcessId();
 			HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, PID);
@@ -35,17 +94,13 @@ namespace PRUtils {
 			return modules;
 		}
 
-		void* SearchMemory(HANDLE hProcess, const char* target) {
-			// buffer
-			// char buffer[2048];
-			// code to read memory
-			// ReadProcessMemory(process, modules[0].modBaseAddr + i, &buffer, sizeof(buffer), nullptr);
+		void* SearchMemory(HANDLE hProcess, string target) {
 
 			std::vector<MODULEENTRY32> modules = GetModules(GetProcessId(hProcess));
 
 			const size_t alignment = 1;
 			const size_t size = sizeof(target);
-			const size_t length = strlen(target) - 1;
+			const size_t length = target.length() - 1;
 			void* ptr = nullptr;
 			unsigned int score = 0;
 			unsigned long long probIterator = 0; // initialize iterator to change string array location
@@ -61,9 +116,7 @@ namespace PRUtils {
 
 					std::string wText = std::format("Module: {}, Iteration: {}, Probability: {}%", moduleCount, modulePos, (float)probIterator / (float)length * 100.0f);
 
-#ifdef DEBUG
 					SetConsoleTitleA(wText.c_str());
-#endif
 
 					ReadProcessMemory(hProcess, modules[moduleCount].modBaseAddr + modulePos, &buffer, sizeof(buffer), nullptr);
 
@@ -80,7 +133,6 @@ namespace PRUtils {
 						std::cout << '\n';
 					}
 					std::cout << buffer;
-					std::wcout << buffer;
 #endif
 
 				}
@@ -94,9 +146,53 @@ namespace PRUtils {
 			return (void*)((long long)ptr - length + 1);
 		}
 
-		bool ReplaceMemory(HANDLE hProcess, const char* target, const char* replacement)
+		class ModifyProtection {
+		public:
+			MEMORY_BASIC_INFORMATION mbi;
+			unsigned long NewProtection;
+
+			ModifyProtection(HANDLE ihProcess, void* iaddress)
+				: hProcess(ihProcess), address(iaddress), NewProtection(0), oldProtection(0) {
+
+				// Get memory information for the address
+				if (VirtualQueryEx(hProcess, address, &mbi, sizeof(mbi)) == 0) {
+					std::cerr << "VirtualQueryEx failed!" << std::endl;
+					return;
+				}
+
+				// Set the new protection to PAGE_READWRITE if it's not set yet
+				if (NewProtection == 0) {
+					NewProtection = mbi.Protect | PAGE_READWRITE;
+				}
+
+				// Change memory protection
+				if (!VirtualProtectEx(hProcess, mbi.BaseAddress, mbi.RegionSize, NewProtection, &oldProtection)) {
+					std::cerr << "Failed to change memory protection!" << std::endl;
+				}
+			}
+
+			~ModifyProtection() {
+				// Restore the original protection on deconstruction
+				if (!VirtualProtectEx(hProcess, mbi.BaseAddress, mbi.RegionSize, oldProtection, &oldProtection)) {
+					std::cerr << "Failed to restore memory protection!" << std::endl;
+				}
+			}
+		private:
+			HANDLE hProcess;
+			void* address;
+			unsigned long oldProtection;
+		};
+
+		void* ReplaceMemory(HANDLE hProcess, string target, string replacement)
 		{
-			return false;
+			void* replaceLocation = SearchMemory(hProcess, target);
+
+			ModifyProtection mp(hProcess, replaceLocation);
+
+			debug::QueryMemory(hProcess, replaceLocation);
+
+
+			return nullptr;
 		}
 	}
 }
