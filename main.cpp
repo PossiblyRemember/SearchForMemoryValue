@@ -2,18 +2,15 @@
 #include <string>
 #include <iostream>
 #include "memoryMan.hpp"
-#include "OpenGLMan.h"
+//#include "OpenGLMan.h"
 #include "image_utils.h"
 #include <future>
 #include <TlHelp32.h>
+#include "common.hpp"
+
 using namespace std;
 using namespace PRUtils::memory;
 
-#pragma region UsefulDefines
-#define WARNINGFMT "\033[33m"
-#define DEFAULTFMT "\033[0m"
-#define ERRORFMT "\033[31m"
-#pragma endregion
 
 
 int main(int *argc, char **argv) {
@@ -41,8 +38,9 @@ int main(int *argc, char **argv) {
 	if (!AdjustTokenPrivileges(token, false, &new_privileges, 0, nullptr, nullptr)) { // change current token to be able to debug other applications. output error if fail
 		printf("%sERROR: %ld%s\n", ERRORFMT, GetLastError(), DEFAULTFMT);
 	};
-	unsigned long PID;
-	input >> PID; // save user input as PID
+	string iPID;
+	getline(cin,iPID); // save user input as PID
+	unsigned long PID = stoi(iPID);
 	cout << '\n';
 
 	// check if process id is null
@@ -61,15 +59,13 @@ int main(int *argc, char **argv) {
 
 	printf("Enter string to search for: ");
 	string stringToSearchFor;
-	input.clear();
-	input >> stringToSearchFor;
-	cout << '\n';
+	getline(cin, stringToSearchFor);
+	cout << stringToSearchFor.length() << '\n';
 
 	printf("Enter string to replace it with: ");
 	string stringToReplaceWith;
-	input.clear();
-	input >> stringToReplaceWith;
-	cout << '\n';
+	getline(cin, stringToReplaceWith);
+	cout << stringToReplaceWith.length() << '\n';
 
 	if (stringToReplaceWith.length() > stringToSearchFor.length()) {
 		printf("%sWARNING: Replacement string is longer than source. Potential overflow. Continue?%s (y/n): ",WARNINGFMT,DEFAULTFMT);

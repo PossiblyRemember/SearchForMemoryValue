@@ -1,4 +1,5 @@
 #pragma once
+#include "common.hpp"
 #include <windows.h>
 #include <psapi.h>
 #include <iostream>
@@ -8,6 +9,9 @@
 #include <format>
 #include <string>
 #include <iostream>
+#include <thread>
+#include <chrono> 
+
 /*
 #define DEBUG
 #define CHARDEBUG

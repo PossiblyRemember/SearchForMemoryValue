@@ -231,6 +231,7 @@
     <ClCompile Include="memoryMan.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common.hpp" />
     <ClInclude Include="image_utils.h" />
     <ClInclude Include="memoryMan.hpp" />
     <ClInclude Include="Possibly Remember\Memory Management\common_utils.h" />
