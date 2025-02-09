@@ -84,8 +84,8 @@ namespace PRUtils {
 			}
 			vector<MODULEENTRY32> modules;
 			do {
-				printf("Base address of Module %s is at address %p\n",modEntry.szModule,modEntry.modBaseAddr);
-				unsigned int i = 1;
+				unsigned int i = 0;
+				printf("#%i Base address of Module %s is at address %p\n",i,modEntry.szModule,modEntry.modBaseAddr);
 				++i;
 				modules.push_back(modEntry);
 
