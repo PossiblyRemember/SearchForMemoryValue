@@ -94,7 +94,7 @@ namespace PRUtils {
 			return modules;
 		}
 
-		void* SearchMemory(HANDLE hProcess, string target) {
+		std::vector<void*> SearchMemory(HANDLE hProcess, string target) {
 
 			std::vector<MODULEENTRY32> modules = GetModules(GetProcessId(hProcess));
 
@@ -110,11 +110,13 @@ namespace PRUtils {
 			}
 			bool shouldCountThread = true;
 
-			unsigned int moduleCount = 0;
+			std::vector<void*> results;
+
+			unsigned int moduleCount = 0; 
 			unsigned int modulePos = 0;
-			thread countThread([&shouldCountThread, &moduleCount, &modulePos, &probIterator, length]() {
+			thread countThread([&shouldCountThread, &moduleCount, &modulePos, &probIterator, length, &results]() {
 				while (shouldCountThread) {
-					std::string wText = std::format("Module: {}, Iteration: {}, Probability: {}%", moduleCount, modulePos, (float)probIterator / (float)length * 100.0f);
+					std::string wText = std::format("Module: {}, Iteration: {}, Probability: {}%, Found: {}", moduleCount, modulePos, (float)probIterator / (float)length * 100.0f, results.size());
 					SetConsoleTitleA(wText.c_str());
 					this_thread::sleep_for(chrono::milliseconds(500));
 				}
@@ -147,7 +149,7 @@ namespace PRUtils {
 				}
 				++moduleCount;
 			}
-			if (probIterator != length) {
+			if (results.size() == 0) {
 				printf("%sERROR: Nothing found.%s", ERRORFMT, DEFAULTFMT);
 				shouldCountThread = false;
 				countThread.join();	
@@ -157,7 +159,8 @@ namespace PRUtils {
 			shouldCountThread = false;
 			countThread.join();
 
-			return (void*)((long long)ptr - length + 1);
+			return results;
+			// return (void*)((long long)ptr - length + 1);
 		}
 
 		class ModifyProtection {
@@ -175,12 +178,6 @@ namespace PRUtils {
 					std::cerr << "VirtualQueryEx failed! " << GetLastError() << std::endl;
 					return;
 				}
-
-				// Set the new protection to PAGE_READWRITE if it's not set yet
-				/*if (NewProtection == 0) {
-					NewProtection = mbi.Protect | PAGE_READWRITE;
-					cout << mbi.Protect << " now " << NewProtection << '\n';
-				}*/
 
 				// Change memory protection
 				if (!VirtualProtectEx(hProcess, mbi.BaseAddress, mbi.RegionSize, NewProtection, &oldProtection)) {
@@ -201,19 +198,21 @@ namespace PRUtils {
 			unsigned long oldProtection;
 		};
 
-		void* ReplaceMemory(HANDLE hProcess, string target, string replacement)
+		std::vector<void*> ReplaceMemory(HANDLE hProcess, string target, string replacement)
 		{
-			void* replaceLocation = SearchMemory(hProcess, target);
-			if (replaceLocation == nullptr) {
-				return nullptr;
+			auto results = SearchMemory(hProcess, target);
+			if (results.size() == 0) {
+				return std::vector<void*>();
 			} 
 
-			ModifyProtection mp(hProcess, replaceLocation);
+			for (void* replaceLocation : results) {
+				ModifyProtection mp(hProcess, replaceLocation);
 
-			debug::QueryMemory(hProcess, replaceLocation);
+				WriteProcessMemory(hProcess, mp.mbi.BaseAddress, replacement.c_str(), replacement.length(), nullptr);
+			}
 
 
-			return replaceLocation;
+			return results;
 		}
 	}
 }

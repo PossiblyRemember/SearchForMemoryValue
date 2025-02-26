@@ -34,8 +34,8 @@ namespace PRUtils {
 		}
 		std::vector<MODULEENTRY32> GetModules(unsigned long PID);
 
-		void* SearchMemory(HANDLE hProcess, string target);
+		std::vector<void*> SearchMemory(HANDLE hProcess, string target);
 
-		void* ReplaceMemory(HANDLE hProcess, string target, string replacement);
+		std::vector<void*> ReplaceMemory(HANDLE hProcess, string target, string replacement);
 	}
 }
